@@ -1,0 +1,3 @@
+astral
+pytz==2019.3
+requests

@@ -1,0 +1,162 @@
+####################################################################################################
+# docker-compose.yml - OpenHAB 2.5.0-release container compose file.
+#===================================================================================================
+# v05 20200202  Add Grafana rendering container.
+#               Add logging filter for Jetty errors.
+# v04 20200114  Remove OH container dependency for nefit-easy and grafana.
+# v03 20191230  Switched to host network to support UDP broadcasts (WoL) to external network and
+#               changed port numbers to allow Unifi Controller to use default ports 1900, 8080, and
+#               8443 (also disabled upnp in runtime.cfg).
+#               Updated Grafana Docker image from 6.5.1 to 6.5.2.
+#               Updated Mosquitto Docker image from 1.6.7 to 1.6.8.
+# v02 20191220  Updated to openHAB 2.5.0 release version.
+# v01 20190505  Initial version.
+####################################################################################################
+
+version: '3.5'
+
+services:
+
+  influxdb:
+    # See https://hub.docker.com/_/influxdb for details
+    image: influxdb:1.7.9-alpine
+    container_name: influxdb-openhab-2.5.0
+    environment:
+      - USER_ID=106
+      - GROUP_ID=113
+      - INFLUXDB_REPORTING_DISABLED=true
+      - INFLUXDB_DATA_QUERY_LOG_ENABLED=true
+      - INFLUXDB_HTTP_AUTH_ENABLED=false
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      # sudo mkdir -p /opt/openhab-2.5.0/influxdb/{data,config}
+      - /opt/openhab-2.5.0/influxdb/data:/var/lib/influxdb
+      - /opt/openhab-2.5.0/influxdb/config:/etc/influxdb
+    networks:
+      - openhab-network
+    ports:
+      - "8086:8086"
+    restart: unless-stopped
+
+  grafana:
+    # See https://hub.docker.com/r/grafana/grafana for details
+    build:
+      context: ./grafana
+      dockerfile: Dockerfile
+      args:
+        GRAFANA_VERSION: 6.5.2-ubuntu
+    container_name: grafana-openhab-2.5.0
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      # sudo mkdir -p /opt/openhab-2.5.0/grafana
+      - /opt/openhab-2.5.0/grafana:/var/lib/grafana
+    environment:
+      - GF_PATHS_DATA=/var/lib/grafana/data
+      - GF_PATHS_LOGS=/var/lib/grafana/log
+      - GF_PATHS_CONFIG=/var/lib/grafana/config/grafana.ini
+      - GF_PATHS_PLUGINS=/var/lib/grafana/plugins
+      - GF_INSTALL_PLUGINS=grafana-simple-json-datasource,natel-discrete-panel,grafana-influxdb-flux-datasource,grafana-image-renderer
+      - GF_RENDERING_SERVER_URL=http://renderer:8081/render
+      - GF_RENDERING_CALLBACK_URL=http://grafana:3000/
+      - GF_LOG_FILTERS=rendering:debug
+    networks:
+      - openhab-network
+    ports:
+      - "3000:3000"
+    user: "106"
+    restart: unless-stopped
+
+  # wizzy:
+  #   build:
+  #     context: ./wizzy
+  #     dockerfile: Dockerfile
+  #   container_name: wizzy_oh2.5.0
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /etc/timezone:/etc/timezone:ro
+  #     - /opt/openhab-2.5.0/wizzy/:/wizzy
+  #     # - /opt/openhab-2.5.0/wizzy/datasources:/datasources
+  #     # - /opt/openhab-2.5.0/wizzy/dashboards:/dashboards
+  #   environment:
+  #     - "GRAFANA_URL=http://grafana:3000"
+  #     - "GRAFANA_USERNAME=admin"
+  #     - "GRAFANA_PASSWORD=w!3Lingen8!"
+  #   networks:
+  #     - openhab-network
+  #   # user: "106"
+  
+  renderer:
+    image: grafana/grafana-image-renderer:latest
+    networks:
+      - openhab-network
+    ports:
+      - 8081
+    restart: unless-stopped
+
+  mosquitto:
+    image: eclipse-mosquitto:1.6.8
+    container_name: mosquitto
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /opt/openhab-2.5.0/mosquitto/config:/mosquitto/config
+      - /opt/openhab-2.5.0/mosquitto/log:/mosquitto/log
+      - /opt/openhab-2.5.0/mosquitto/data:/mosquitto/data
+    networks:
+      - openhab-network
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    restart: unless-stopped
+
+  nefit-easy:
+    build: ./nefiteasy
+    image: nefiteasy:1.1.0
+    container_name: nefiteasy-openhab-2.5.0
+    networks:
+      - openhab-network
+    ports:
+      - "4000:4000"
+    restart: unless-stopped
+
+  openhab:
+    build:
+      context: ./openhab
+      args:
+        VERSION: 2.5.0
+      dockerfile: Dockerfile
+    image: "openhab/openhab:2.5.0"
+    container_name: openhab-2.5.0
+    working_dir: /openhab
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /opt/openhab-2.5.0/openhab/conf:/openhab/conf
+      - /opt/openhab-2.5.0/openhab/userdata:/openhab/userdata
+      - /opt/openhab-2.5.0/openhab/addons:/openhab/addons
+        #    devices:
+        #      - /dev/ttyUSB0:/dev/ttyUSB0:rwm
+    environment:
+      - USER_ID=106
+      - GROUP_ID=113
+      - CRYPTO_POLICY=unlimited
+#--- Choose between isolated network,
+    # networks:
+    #   - openhab-network
+    # ports:
+    #   - "5080:8080"
+    #   - "8101:8101"
+    #   - "5007:5007"
+# or host network.
+    network_mode: host
+#--- End choose between isolated or host network
+    depends_on:
+      - influxdb
+      # - mosquitto
+    restart: unless-stopped
+
+networks:
+  openhab-network:
+    driver: bridge

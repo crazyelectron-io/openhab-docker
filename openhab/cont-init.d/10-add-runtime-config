@@ -1,0 +1,35 @@
+#!/bin/bash -x
+
+# 
+echo "Set openHAB configuration in runtime.cfg"
+OH_RUNTIME_CFG=${OPENHAB_HOME}/conf/services/runtime.cfg
+
+# Enable remote ssh
+sed -i \
+    "s/\#org.apache.karaf.shell:sshHost\s*=.*/org.apache.karaf.shell:sshHost=0.0.0.0/g" \
+    ${OH_RUNTIME_CFG}
+
+# Add network subnet to use for OH
+# grep -qxF \
+#     'org.eclipse.smarthome.network:primaryAddress = 192.168.2.2/24' \
+#     ${OH_RUNTIME_CFG} || echo 'org.eclipse.smarthome.network:primaryAddress = 192.168.2.2/24' >> ${OH_RUNTIME_CFG}
+
+# Set language parameter to 'en'
+sed -i \
+    "s/\#org.eclipse.smarthome.i18n:language\s*=.*/#org.eclipse.smarthome.i18n:language=en/g" \
+    ${OH_RUNTIME_CFG}
+
+# Set region parameter to NL
+sed -i \
+    "s/\#org.eclipse.smarthome.i18n:region\s*=.*/org.eclipse.smarthome.i18n:region=NL/g" \
+    ${OH_RUNTIME_CFG}
+
+# Set the default persistence service to influxdb
+sed -i \
+    "s/\#org.eclipse.smarthome.persistence:default\s*=.*/org.eclipse.smarthome.persistence:default=influxdb/g" \
+    ${OH_RUNTIME_CFG}
+
+# Disable Simple Link mode
+sed -i \
+    "s/#org.eclipse.smarthome.links:autoLinks\s*=.*/org.eclipse.smarthome.links:autoLinks=false/g" \
+    ${OH_RUNTIME_CFG}

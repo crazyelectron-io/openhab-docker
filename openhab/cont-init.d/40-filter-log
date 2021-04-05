@@ -1,0 +1,39 @@
+#!/bin/sh -x
+
+echo "Add log filtering"
+
+LOGFILE="/openhab/userdata/etc/org.ops4j.pax.logging.cfg"
+
+grep -qxF '# Custom log filtering' ${LOGFILE} || echo '# Custom log filtering' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.event.filter.1.type = Filters' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.type = Filters' >> ${LOGFILE}
+
+grep -qxF 'log4j2.appender.event.filter.1.a.type = RegexFilter' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.a.type = RegexFilter' >> ${LOGFILE} 
+grep -qxF 'log4j2.appender.event.filter.1.a.regex = .*(Astro_(Day|Sun|Moon|Radiation)).*' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.a.regex = .*(Astro_(Day|Sun|Moon|Radiation)).*' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.event.filter.1.a.onMatch = DENY' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.a.onMatch = DENY' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.event.filter.1.a.onMismatch = NEUTRAL' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.a.onMismatch = NEUTRAL' >> ${LOGFILE} 
+
+grep -qxF 'log4j2.appender.event.filter.1.b.type = RegexFilter' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.b.type = RegexFilter' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.event.filter.1.b.regex = .*(AC_Temp_|CV_|NHC_|Temp_Avg|Weather_Temp).*' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.b.regex = .*(AC_Temp_|CV_|NHC_|Temp_Avg|Weather_Temp).*' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.event.filter.1.b.onMatch = DENY' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.b.onMatch = DENY' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.event.filter.1.b.onMismatch = NEUTRAL' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.b.onMismatch = NEUTRAL' >> ${LOGFILE} 
+
+grep -qxF 'log4j2.appender.event.filter.1.c.type = RegexFilter' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.c.type = RegexFilter' >> ${LOGFILE} 
+grep -qxF 'log4j2.appender.event.filter.1.c.regex = .*(Power_Use|Power_Ret|Power_Delta).*' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.c.regex = .*(Power_Use|Power_Ret|Power_Delta).*' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.event.filter.1.c.onMatch = DENY' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.c.onMatch = DENY' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.event.filter.1.c.onMismatch = NEUTRAL' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.c.onMismatch = NEUTRAL' >> ${LOGFILE} 
+
+grep -qxF 'log4j2.appender.event.filter.1.d.type = RegexFilter' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.d.type = RegexFilter' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.event.filter.1.d.regex = .*(Sys_OH2|received command ON|Alarm_Update).*' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.d.regex = .*(Sys_OH2|received command ON|Alarm_Update).*' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.event.filter.1.d.onMatch = DENY' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.d.onMatch = DENY' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.event.filter.1.d.onMismatch = NEUTRAL' ${LOGFILE} || echo 'log4j2.appender.event.filter.1.d.onMismatch = NEUTRAL' >> ${LOGFILE} 
+
+grep -qxF 'log4j2.appender.out.filter.jettyWarn.type = RegexFilter' ${LOGFILE} || echo 'log4j2.appender.out.filter.jettyWarn.type = RegexFilter' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.out.filter.jettyWarn.regex = .*(error has occurred while writing a response message entity to the container output stream).*' ${LOGFILE} || echo 'log4j2.appender.out.filter.jettyWarn.regex = .*(error has occurred while writing a response message entity to the container output stream).*' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.out.filter.jettyWarn.onMatch = DENY' ${LOGFILE} || echo 'log4j2.appender.out.filter.jettyWarn.onMatch = DENY' >> ${LOGFILE}
+grep -qxF 'log4j2.appender.out.filter.jettyWarn.onMismatch = NEUTRAL' ${LOGFILE} || echo 'log4j2.appender.out.filter.jettyWarn.onMismatch = NEUTRAL' >> ${LOGFILE} 
+
+# log4j2.logger.org_glassfish_jersey.level = OFF
+# log4j2.logger.org_glassfish_jersey.name = org.glassfish.jersey
+# log4j2.logger.org_eclipse_jetty_server_serverruntime.level = OFF
+# log4j2.logger.org_eclipse_jetty_server_serverruntime.name = org.eclipse.jetty.server.ServerRuntime
+

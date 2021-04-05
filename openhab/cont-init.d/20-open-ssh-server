@@ -1,0 +1,7 @@
+#!/bin/bash -x
+
+echo "Enable remote SSH access to openHAB console"
+
+sed -i \
+    "s/\#org.apache.karaf.shell:sshHost\s*=.*/org.apache.karaf.shell:sshHost=0.0.0.0/g" \
+    /openhab/conf/services/runtime.cfg

@@ -1,0 +1,4 @@
+/nefiteasy/Dockerfile filter=git-crypt diff=git-crypt
+/openhab/cont-init.d/20-add-allowed-ssh-keys filter=git-crypt diff=git-crypt
+/openhab/cont-init.d/20-set-host-key filter=git-crypt diff=git-crypt
+/openhab/cont-init.d/30-influx-config filter=git-crypt diff=git-crypt

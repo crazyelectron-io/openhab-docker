@@ -1,0 +1,36 @@
+#!/bin/bash -x
+
+echo "Set openHAB configuration in addons.cfg"
+
+# Enable the New Rule Engine (if not yet configured)
+sed -i \
+    "s/#misc\s*=.*/misc=ruleengine,openhabcloud/g" \
+    /openhab/conf/services/addons.cfg
+
+# Enable transformation services (if not yet configured)
+sed -i \
+    "s/#transformation\s*=.*/transformation=map,jsonpath,javascript,exec,scale/g" \
+    /openhab/conf/services/addons.cfg
+
+# Enable Basic UI, Paper UI, HABmin, HABpanel and REST API documentation (if not yet configured)
+sed -i \
+    "s/#ui\s*=.*/ui=basic,paper,habpanel,habmin,restdocs/g" \
+    /openhab/conf/services/addons.cfg
+
+# Add actions addons
+#sed -i "s/#actions\s*=.*/actions=pushbullet/g" ${OPENHAB_HOME}/conf/services/addons.cfg
+
+# Set minimal install mode (if not yet configured)
+sed -i \
+    "s/#package\s*=.*/package=minimal/g" \
+    /openhab/conf/services/addons.cfg
+
+# Enable persistence services (if not yet configured)
+sed -i \
+    "s/#persistence\s*=.*/persistence=mapdb,influxdb/g" \
+    /openhab/conf/services/addons.cfg
+
+# Add set of bindings (if not yet configured)
+sed -i \
+    "s/#binding\s*=.*/binding=astro,ntp,http1,exec,ftpupload,systeminfo,mqtt,solaredge,volvooncall,netatmo,expire1,kodi,amazonechocontrol,lgwebos,daikin,denonmarantz,spotify,heos/g" \
+    /openhab/conf/services/addons.cfg
