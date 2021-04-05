@@ -17,6 +17,7 @@
 #
 
 if [ -d .git-crypt ]; then
+    echo 'Git pre-commit hook running'
     STAGED_FILES=$(git diff --cached --name-status | awk '$1 != "D" { print $2 }' | xargs echo)
     if [ -n "${STAGED_FILES}" ]; then
         git-crypt status ${STAGED_FILES} &>/dev/null
@@ -24,8 +25,8 @@ if [ -d .git-crypt ]; then
             git-crypt status -e ${STAGED_FILES}
             echo '/!\ You should have first unlocked your repository BEFORE staging the above file(s)'
             echo '/!\ Proceed now as follows:'
-            echo -e "\t git unstage ${STAGED_FILES}"
-            echo -e "\t git crypt unlock"
+            echo -e "\t git reset -- ${STAGED_FILES}"
+            echo -e "\t git-crypt unlock"
             echo -e "\t git add ${STAGED_FILES}"
             exit 1
         fi
