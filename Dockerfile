@@ -51,13 +51,11 @@ RUN apt-get update && \
         locales-all \
         netbase \
         procps \
-        openssh-server \
         tini \
         unzip \
         wget \
         zip && \
     c_rehash && \
-    mkdir -p /var/run/sshd && \
     chmod u+s /usr/sbin/arping && \
     ln -s -f /bin/true /usr/bin/chfn && \
     apt-get clean && \

@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Start SSH daemon
-exec service ssh start
-
 interactive=$(if test -t 0; then echo true; else echo false; fi)
 set -eux -o pipefail ${EXTRA_SHELL_OPTS-}
 IFS=$'\n\t'
