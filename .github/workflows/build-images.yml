@@ -42,11 +42,11 @@ jobs:
         with:
           context: ./
           file: Dockerfile
-          build_args: |
+          build-args: |
             BUILD_DATE=${{ env.date }}
-            JAVA_VERSION="11"
+            JAVA_VERSION=11
             VCS_REF=${{ env.vsc_ref }}
-            OPENHAB_VERSION="3.3.0"
+            OPENHAB_VERSION=3.3.0
           platforms: linux/amd64
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/openhab:latest , ${{ secrets.DOCKER_HUB_USERNAME }}/openhab:3.3.0
