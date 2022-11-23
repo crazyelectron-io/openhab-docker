@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
        tag: ["latest", "snapshot"]
-       distribution: ["alpine", "debian"]
+       distribution: ["debian"]
     name: ${{ matrix.tag }}-${{ matrix.distribution }}
     steps:
       - name: Checkout

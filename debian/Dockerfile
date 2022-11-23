@@ -51,11 +51,13 @@ RUN apt-get update && \
         locales-all \
         netbase \
         procps \
+        openssh-server \
         tini \
         unzip \
         wget \
         zip && \
     c_rehash && \
+    mkdir -p /var/run/sshd && \
     chmod u+s /usr/sbin/arping && \
     ln -s -f /bin/true /usr/bin/chfn && \
     apt-get clean && \
@@ -95,7 +97,7 @@ RUN chmod +x ${OPENHAB_HOME}/runtime/bin/update
 VOLUME ${OPENHAB_CONF} ${OPENHAB_USERDATA} ${OPENHAB_HOME}/addons
 
 # Expose HTTP, HTTPS, Console and LSP ports
-EXPOSE 8080 8443 8101 5007
+EXPOSE 22 8080 8443 8101 5007
 
 # Set healthcheck
 HEALTHCHECK --interval=5m --timeout=5s --retries=3 CMD curl -f http://localhost:${OPENHAB_HTTP_PORT}/ || exit 1
