@@ -2,7 +2,7 @@
 
 ![openHAB logo](https://github.com/openhab/openhab-docker/raw/main/openhab.png)
 
-This is a for of the official OpenHAB Docker build repository tailored to my needs.
+This is a fork of the official OpenHAB Docker build repository tailored to my needs.
 
 [![Build Status](https://ci.openhab.org/job/openHAB-Docker/badge/icon)](https://ci.openhab.org/job/openHAB-Docker/)
 [![EPL-2.0](https://img.shields.io/badge/license-EPL%202-green.svg)](https://opensource.org/licenses/EPL-2.0)
