@@ -9,7 +9,7 @@ ENV \
     CRYPTO_POLICY="limited" \
     EXTRA_JAVA_OPTS="" \
     EXTRA_SHELL_OPTS="" \
-    GROUP_ID="9001" \
+    GROUP_ID="65534" \
     KARAF_EXEC="exec" \
     LC_ALL="en_US.UTF-8" \
     LANG="en_US.UTF-8" \
