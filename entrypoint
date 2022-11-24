@@ -33,7 +33,7 @@ rm -f "${OPENHAB_USERDATA}/tmp/instances/instance.properties"
 # openSUSE (old):     audio=17,  dialout=16, uucp=14
 # openSUSE (new):     audio=492, dialout=490
 # Raspberry Pi OS:    audio=29,  dialout=20, uucp=10, gpio=997
-NEW_USER_ID=${USER_ID:-1001}
+NEW_USER_ID=${USER_ID:-65534}
 NEW_GROUP_ID=${GROUP_ID:-$NEW_USER_ID}
 echo "Starting with openhab user id: $NEW_USER_ID and group id: $NEW_GROUP_ID"
 if ! id -u openhab >/dev/null 2>&1; then
