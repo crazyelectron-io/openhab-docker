@@ -9,7 +9,7 @@ ENV \
     CRYPTO_POLICY="limited" \
     EXTRA_JAVA_OPTS="" \
     EXTRA_SHELL_OPTS="" \
-    GROUP_ID="65534" \
+    GROUP_ID="1001" \
     KARAF_EXEC="exec" \
     LC_ALL="en_US.UTF-8" \
     LANG="en_US.UTF-8" \
@@ -21,7 +21,7 @@ ENV \
     OPENHAB_HTTPS_PORT="8443" \
     OPENHAB_LOGDIR="/openhab/userdata/logs" \
     OPENHAB_USERDATA="/openhab/userdata" \
-    USER_ID="65534"
+    USER_ID="1001"
 
 # Basic build-time metadata as defined at http://label-schema.org
 LABEL org.label-schema.build-date=$BUILD_DATE \
