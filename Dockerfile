@@ -51,6 +51,7 @@ RUN apt-get update && \
         locales-all \
         netbase \
         procps \
+        openssh-server \
         tini \
         unzip \
         wget \
