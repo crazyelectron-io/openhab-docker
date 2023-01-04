@@ -46,10 +46,10 @@ jobs:
             BUILD_DATE=${{ env.date }}
             JAVA_VERSION=11
             VCS_REF=${{ env.vsc_ref }}
-            OPENHAB_VERSION=3.4.0.M5
+            OPENHAB_VERSION=3.4.0
           platforms: linux/amd64
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/openhab:latest , ${{ secrets.DOCKER_HUB_USERNAME }}/openhab:3.3.0
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/openhab:latest , ${{ secrets.DOCKER_HUB_USERNAME }}/openhab:3.4.0
 
       - name: Show image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
