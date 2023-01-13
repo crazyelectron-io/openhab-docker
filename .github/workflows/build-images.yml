@@ -46,7 +46,7 @@ jobs:
             BUILD_DATE=${{ env.date }}
             JAVA_VERSION=11
             VCS_REF=${{ env.vsc_ref }}
-            OPENHAB_VERSION=3.4.0
+            OPENHAB_VERSION=3.4.1
           platforms: linux/amd64
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/openhab:latest , ${{ secrets.DOCKER_HUB_USERNAME }}/openhab:3.4.0
