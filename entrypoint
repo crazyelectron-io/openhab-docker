@@ -101,6 +101,9 @@ if [ ! -z $(cmp "${OPENHAB_USERDATA}/etc/version.properties" "${OPENHAB_HOME}/di
   exec "${OPENHAB_HOME}/runtime/bin/update" 2>&1 | tee -a "${OPENHAB_LOGDIR}/update.log"
 fi
 
+# Allow remote Karaf connections
+sed -i '/org.apache.karaf.shell/c\org.apache.karaf.shell:sshHost = 0.0.0.0' /openhab/conf/services/runtime.cfg
+
 # Set openhab folder permission
 chown -R openhab:openhab "${OPENHAB_HOME}"
 sync
