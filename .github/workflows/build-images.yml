@@ -44,7 +44,7 @@ jobs:
           file: Dockerfile
           build-args: |
             BUILD_DATE=${{ env.date }}
-            JAVA_VERSION=11
+            JAVA_VERSION=17
             VCS_REF=${{ env.vsc_ref }}
             OPENHAB_VERSION=4.1.1
           platforms: linux/amd64
