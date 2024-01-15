@@ -102,7 +102,7 @@ initialize_volume "${OPENHAB_USERDATA}" "${OPENHAB_HOME}/dist/userdata"
 # fi
 
 # Allow remote Karaf connections
-# sed -i '/org.apache.karaf.shell/c\org.apache.karaf.shell:sshHost = 0.0.0.0' /openhab/conf/services/runtime.cfg
+sed -i '/org.apache.karaf.shell/c\org.apache.karaf.shell:sshHost = 0.0.0.0' /openhab/conf/services/runtime.cfg
 
 # Set openhab userdata folder permission
 chown -R openhab:openhab "${OPENHAB_HOME}" || true
