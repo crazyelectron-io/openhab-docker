@@ -83,7 +83,7 @@ initialize_volume() {
 }
 
 # Initialize empty volumes and update userdata
-# initialize_volume "${OPENHAB_CONF}" "${OPENHAB_HOME}/dist/conf"
+initialize_volume "${OPENHAB_CONF}" "${OPENHAB_HOME}/dist/conf"
 initialize_volume "${OPENHAB_USERDATA}" "${OPENHAB_HOME}/dist/userdata"
 
 # Update userdata if versions do not match
