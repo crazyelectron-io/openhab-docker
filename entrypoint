@@ -105,7 +105,7 @@ initialize_volume "${OPENHAB_USERDATA}" "${OPENHAB_HOME}/dist/userdata"
 # sed -i '/org.apache.karaf.shell/c\org.apache.karaf.shell:sshHost = 0.0.0.0' /openhab/conf/services/runtime.cfg
 
 # Set openhab userdata folder permission
-chown -R openhab:openhab "${OPENHAB_USERDATA}"
+chown -R openhab:openhab "${OPENHAB_HOME}" || true
 sync
 
 # Run s6-style init continuation scripts if dir exists and s6 is not installed
