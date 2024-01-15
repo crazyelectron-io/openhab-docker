@@ -6,8 +6,8 @@ ARG JAVA_VERSION
 ARG OPENHAB_VERSION
 
 ENV \
-    CRYPTO_POLICY="limited" \
-    EXTRA_JAVA_OPTS="" \
+    CRYPTO_POLICY="unlimited" \
+    EXTRA_JAVA_OPTS="-Duser.timezone=Europe/Amsterdam -Djava.net.preferIPv4Stack=true --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED" \
     EXTRA_SHELL_OPTS="" \
     GROUP_ID="1001" \
     KARAF_EXEC="exec" \
@@ -89,8 +89,8 @@ RUN version="$(echo $OPENHAB_VERSION | sed 's/snapshot/SNAPSHOT/g')" && \
     mkdir -p "${OPENHAB_HOME}/dist" && \
     cp -a "${OPENHAB_CONF}" "${OPENHAB_USERDATA}" "${OPENHAB_HOME}/dist" && \
     echo 'export TERM=${TERM:=dumb}' | tee -a ~/.bashrc
-COPY update ${OPENHAB_HOME}/runtime/bin/update
-RUN chmod +x ${OPENHAB_HOME}/runtime/bin/update
+# COPY update ${OPENHAB_HOME}/runtime/bin/update
+# RUN chmod +x ${OPENHAB_HOME}/runtime/bin/update
 
 # Expose volume with configuration and userdata dir
 VOLUME ${OPENHAB_CONF} ${OPENHAB_USERDATA} ${OPENHAB_HOME}/addons

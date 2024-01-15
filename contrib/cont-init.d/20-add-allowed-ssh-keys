@@ -5,8 +5,7 @@ cat > "${OPENHAB_USERDATA}/etc/keys.properties" <<EOF
 # For security reason, the default auto-signed key is disabled.
 #
 
-openhab=A...your-ssh-public-key-here...B,_g_:admingroup
-
+openhab=AAAAB3Nz...,_g_:admingroup
 _g_\:admingroup = group,admin,manager,viewer
 
 EOF

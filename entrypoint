@@ -72,44 +72,45 @@ if ! id -u openhab >/dev/null 2>&1; then
   adduser openhab uucp3
 fi
 
-initialize_volume() {
-  volume="$1"
-  source="$2"
+# initialize_volume() {
+#   volume="$1"
+#   source="$2"
 
-  if [ -z "$(ls -A "$volume")" ]; then
-    echo "Initializing empty volume ${volume} ..."
-    cp -av "${source}/." "${volume}/"
-  fi
-}
+#   if [ -z "$(ls -A "$volume")" ]; then
+#     echo "Initializing empty volume ${volume} ..."
+#     cp -av "${source}/." "${volume}/"
+#   fi
+# }
 
-# Initialize empty volumes and update userdata
-initialize_volume "${OPENHAB_CONF}" "${OPENHAB_HOME}/dist/conf"
-initialize_volume "${OPENHAB_USERDATA}" "${OPENHAB_HOME}/dist/userdata"
+# # Initialize empty volumes and update userdata
+# initialize_volume "${OPENHAB_CONF}" "${OPENHAB_HOME}/dist/conf"
+# initialize_volume "${OPENHAB_USERDATA}" "${OPENHAB_HOME}/dist/userdata"
 
 # Update userdata if versions do not match
-if [ ! -z $(cmp "${OPENHAB_USERDATA}/etc/version.properties" "${OPENHAB_HOME}/dist/userdata/etc/version.properties") ]; then
-  echo "Image and userdata versions differ! Starting an upgrade." | tee "${OPENHAB_LOGDIR}/update.log"
+# if [ ! -z $(cmp "${OPENHAB_USERDATA}/etc/version.properties" "${OPENHAB_HOME}/dist/userdata/etc/version.properties") ]; then
+#   echo "Image and userdata versions differ! Starting an upgrade." | tee "${OPENHAB_LOGDIR}/update.log"
 
-  # Make a backup of userdata
-  backup_file=userdata-$(date +"%FT%H-%M-%S").tar
-  if [ ! -d "${OPENHAB_BACKUPS}" ]; then
-    mkdir "${OPENHAB_BACKUPS}"
-  fi
-  tar --exclude="${OPENHAB_BACKUPS}" -c -f "${OPENHAB_BACKUPS}/${backup_file}" "${OPENHAB_USERDATA}"
-  echo "You can find backup of userdata in ${OPENHAB_BACKUPS}/${backup_file}" | tee -a "${OPENHAB_LOGDIR}/update.log"
+#   # Make a backup of userdata
+#   backup_file=userdata-$(date +"%FT%H-%M-%S").tar
+#   if [ ! -d "${OPENHAB_BACKUPS}" ]; then
+#     mkdir "${OPENHAB_BACKUPS}"
+#   fi
+#   tar --exclude="${OPENHAB_BACKUPS}" -c -f "${OPENHAB_BACKUPS}/${backup_file}" "${OPENHAB_USERDATA}"
+#   echo "You can find backup of userdata in ${OPENHAB_BACKUPS}/${backup_file}" | tee -a "${OPENHAB_LOGDIR}/update.log"
 
-  exec "${OPENHAB_HOME}/runtime/bin/update" 2>&1 | tee -a "${OPENHAB_LOGDIR}/update.log"
-fi
+#   exec "${OPENHAB_HOME}/runtime/bin/update" 2>&1 | tee -a "${OPENHAB_LOGDIR}/update.log"
+# fi
 
 # Allow remote Karaf connections
 sed -i '/org.apache.karaf.shell/c\org.apache.karaf.shell:sshHost = 0.0.0.0' /openhab/conf/services/runtime.cfg
 
 # Set openhab folder permission
-chown -R openhab:openhab "${OPENHAB_HOME}"
+# chown -R openhab:openhab "${OPENHAB_HOME}"
 sync
 
 # Run s6-style init continuation scripts if dir exists and s6 is not installed
 if [ -d /etc/cont-init.d ] && [ $(ls /usr/bin/s6-* 2>/dev/null | wc -l) == 0 ]; then
+  echo "Running init custom scripts"
   for script in $(find /etc/cont-init.d -type f | grep -v \~ | sort); do
     . "${script}"
   done
