@@ -48,6 +48,7 @@ RUN apt-get update && \
         iputils-ping \
         libcap2-bin \
         locales \
+        sshpass \
         locales-all \
         netbase \
         procps \
